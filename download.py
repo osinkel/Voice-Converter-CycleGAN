@@ -19,7 +19,7 @@ def progress_bar(block_num, block_size, total_size):
 
     downloaded = block_num * block_size
     if downloaded < total_size:
-        pbar.update(downloaded)
+        pbar.start(downloaded)
     else:
         pbar.finish()
         pbar = None
@@ -49,9 +49,7 @@ def maybe_download(filename, url, destination_dir, expected_bytes = None, force 
 
     return filepath
 
-
 def maybe_unzip(zip_filepath, destination_dir, force = False):
-
     print('Extracting zip file: ' + os.path.split(zip_filepath)[-1])
     with zipfile.ZipFile(zip_filepath) as zf:
         zf.extractall(destination_dir)

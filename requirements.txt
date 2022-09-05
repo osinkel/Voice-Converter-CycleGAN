@@ -1,0 +1,14 @@
+# Numpy==1.14
+# TensorFlow==1.15
+# ProgressBar2==3.37.1
+# LibROSA==0.6
+# FFmpeg==4.0
+PyWorld
+Numpy==1.14
+TensorFlow==1.8
+ProgressBar2==3.37.1
+LibROSA==0.6
+FFmpeg
+numba==0.47
+resampy==0.3.1
+kapre==0.1.7

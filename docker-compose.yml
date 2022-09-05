@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    web:
+        build:
+            context: .
+        image: cycle-gan
+        container_name: cycle-gan
+        ports:
+            - 6341:8000
