@@ -100,3 +100,6 @@ GitHub.sublime-settings
 
 .vscode/
 article/
+
+/model
+/model.zip

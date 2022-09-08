@@ -11,7 +11,7 @@ from model import CycleGAN
 def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validation_A_dir, validation_B_dir, output_dir, tensorboard_log_dir):
 
     np.random.seed(random_seed)
-
+    last_epoch = 8382
     num_epochs = 5000
     mini_batch_size = 1 # mini_batch_size = 1 is better
     generator_learning_rate = 0.0002
@@ -74,9 +74,10 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
     print('Time Elapsed for Data Preprocessing: %02d:%02d:%02d' % (time_elapsed // 3600, (time_elapsed % 3600 // 60), (time_elapsed % 60 // 1)))
 
     model = CycleGAN(num_features = num_mcep)
+    model.load(os.path.join(model_dir_default, model_name_default))
 
     for epoch in range(num_epochs):
-        print('Epoch: %d' % epoch)
+        print(f'Epoch: {last_epoch + epoch}')
         '''
         if epoch > 60:
             lambda_identity = 0
@@ -111,7 +112,8 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
                 print('Iteration: {:07d}, Generator Learning Rate: {:.7f}, Discriminator Learning Rate: {:.7f}, Generator Loss : {:.3f}, Discriminator Loss : {:.3f}'.format(num_iterations, generator_learning_rate, discriminator_learning_rate, generator_loss, discriminator_loss))
 
         model.save(directory = model_dir, filename = model_name)
-
+        with open(f'log/{model_name_default.split(".")[0]}/logs.log', mode='a') as f:
+            f.write(f'model {model_name_default} saved on epoch {num_iterations}\n')
         end_time_epoch = time.time()
         time_elapsed_epoch = end_time_epoch - start_time_epoch
 
@@ -160,14 +162,13 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description = 'Train CycleGAN model for datasets.')
-
-    train_A_dir_default = './data/vcc2016_training/SF1'
-    train_B_dir_default = './data/vcc2016_training/TF2'
-    model_dir_default = './model/sf1_tf2'
-    model_name_default = 'sf1_tf2.ckpt'
+    train_A_dir_default = './data/dachnenko'
+    train_B_dir_default = './data/kostya_tts'
+    model_dir_default = './model/dachnenko_kostyatts'
+    model_name_default = 'dachnenko_kostyatts.ckpt'
     random_seed_default = 0
-    validation_A_dir_default = './data/evaluation_all/SF1'
-    validation_B_dir_default = './data/evaluation_all/TF2'
+    validation_A_dir_default = './data/evaluation_all/dachnenko'
+    validation_B_dir_default = './data/evaluation_all/kostya_tts'
     output_dir_default = './validation_output'
     tensorboard_log_dir_default = './log'
 
