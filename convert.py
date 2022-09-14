@@ -4,6 +4,7 @@ import numpy as np
 
 from model import CycleGAN
 from preprocess import *
+import time
 
 def conversion(model_dir, model_name, data_dir, conversion_direction, output_dir):
 
@@ -60,13 +61,14 @@ def conversion(model_dir, model_name, data_dir, conversion_direction, output_dir
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
 
     parser = argparse.ArgumentParser(description = 'Convert voices using pre-trained CycleGAN model.')
 
-    model_dir_default = './model/sf1_tm1'
-    model_name_default = 'sf1_tm1.ckpt'
-    data_dir_default = './data/evaluation_all/SF1'
-    conversion_direction_default = 'A2B'
+    model_dir_default = './model/dude_anatoliy'
+    model_name_default = 'dude_anatoliy.ckpt'
+    data_dir_default = './data/custom'
+    conversion_direction_default = 'B2A'
     output_dir_default = './converted_voices'
 
     parser.add_argument('--model_dir', type = str, help = 'Directory for the pre-trained model.', default = model_dir_default)
@@ -85,4 +87,5 @@ if __name__ == '__main__':
 
     conversion(model_dir = model_dir, model_name = model_name, data_dir = data_dir, conversion_direction = conversion_direction, output_dir = output_dir)
 
+    print(f'Time of execution: {time.perf_counter() - start}')
 

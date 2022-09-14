@@ -11,7 +11,8 @@ from model import CycleGAN
 def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validation_A_dir, validation_B_dir, output_dir, tensorboard_log_dir):
 
     np.random.seed(random_seed)
-    last_epoch = 8382
+    last_epoch = 800
+    num_iterations = 0
     num_epochs = 5000
     mini_batch_size = 1 # mini_batch_size = 1 is better
     generator_learning_rate = 0.0002
@@ -77,7 +78,8 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
     model.load(os.path.join(model_dir_default, model_name_default))
 
     for epoch in range(num_epochs):
-        print(f'Epoch: {last_epoch + epoch}')
+        epoch = last_epoch + epoch
+        print(f'Epoch: {epoch}')
         '''
         if epoch > 60:
             lambda_identity = 0
@@ -91,6 +93,7 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
         dataset_A, dataset_B = sample_train_data(dataset_A = coded_sps_A_norm, dataset_B = coded_sps_B_norm, n_frames = n_frames)
 
         n_samples = dataset_A.shape[0]
+
 
         for i in range(n_samples // mini_batch_size):
 
@@ -113,7 +116,7 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
 
         model.save(directory = model_dir, filename = model_name)
         with open(f'log/{model_name_default.split(".")[0]}/logs.log', mode='a') as f:
-            f.write(f'model {model_name_default} saved on epoch {num_iterations}\n')
+            f.write(f'model {model_name_default} saved on epoch {epoch}, iterations {num_iterations}\n')
         end_time_epoch = time.time()
         time_elapsed_epoch = end_time_epoch - start_time_epoch
 
@@ -162,13 +165,13 @@ def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validati
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description = 'Train CycleGAN model for datasets.')
-    train_A_dir_default = './data/dachnenko'
-    train_B_dir_default = './data/kostya_tts'
-    model_dir_default = './model/dachnenko_kostyatts'
-    model_name_default = 'dachnenko_kostyatts.ckpt'
+    train_A_dir_default = './data/dude'
+    train_B_dir_default = './data/anatoliy'
+    model_dir_default = './model/dude_anatoliy'
+    model_name_default = 'dude_anatoliy.ckpt'
     random_seed_default = 0
-    validation_A_dir_default = './data/evaluation_all/dachnenko'
-    validation_B_dir_default = './data/evaluation_all/kostya_tts'
+    validation_A_dir_default = './data/evaluation_all/dude'
+    validation_B_dir_default = './data/evaluation_all/anatoliy'
     output_dir_default = './validation_output'
     tensorboard_log_dir_default = './log'
 
