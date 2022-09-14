@@ -11,7 +11,7 @@ from model import CycleGAN
 def train(train_A_dir, train_B_dir, model_dir, model_name, random_seed, validation_A_dir, validation_B_dir, output_dir, tensorboard_log_dir):
 
     np.random.seed(random_seed)
-    last_epoch = 800
+    last_epoch = 0
     num_iterations = 0
     num_epochs = 5000
     mini_batch_size = 1 # mini_batch_size = 1 is better
@@ -174,6 +174,17 @@ if __name__ == '__main__':
     validation_B_dir_default = './data/evaluation_all/anatoliy'
     output_dir_default = './validation_output'
     tensorboard_log_dir_default = './log'
+
+    if not os.path.exists(tensorboard_log_dir_default):
+      os.mkdir(tensorboard_log_dir_default)
+
+    model_logs_dir = os.path.join(tensorboard_log_dir_default, model_dir_default.rsplit('/', 1)[-1])
+    if not os.path.exists(model_logs_dir):
+      os.mkdir(model_logs_dir)
+
+    log_file = os.path.join(model_logs_dir, 'logs.log')
+    if not os.path.exists(model_logs_dir):
+      open(os.path.join(model_logs_dir, 'logs.log'), 'w').close()
 
     parser.add_argument('--train_A_dir', type = str, help = 'Directory for A.', default = train_A_dir_default)
     parser.add_argument('--train_B_dir', type = str, help = 'Directory for B.', default = train_B_dir_default)
